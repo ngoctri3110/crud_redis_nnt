@@ -31,9 +31,10 @@ public class EmployeeController {
         return employeeRepository.findById(id);
     }
 
-    @PutMapping("/employee/{id}")
+    @PutMapping("/employees/{id}")
     public void update(@RequestBody Employee employee, @PathVariable("id") int id){
         employeeRepository.delete(id);
+        employee.setId(id);
         employeeRepository.update(employee);
     }
 
