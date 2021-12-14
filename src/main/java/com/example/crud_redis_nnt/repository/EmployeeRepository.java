@@ -4,36 +4,35 @@ import com.example.crud_redis_nnt.model.Employee;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class EmployeeRepository {
 
-    private static final String KEY = "LIST_EMPLOYEE";
+    private static final String KEY = "SET_EMPLOYEE";
 
-    private ListOperations listOperations;//crud hash
+    private SetOperations setOperations;//crud hash
     private RedisTemplate redisTemplate;
 
     public EmployeeRepository(RedisTemplate redisTemplate) {
-        this.listOperations = redisTemplate.opsForList();
+        this.setOperations = redisTemplate.opsForSet();
         this.redisTemplate = redisTemplate;
 
     }
 
     public void saveEmployee(Employee employee){
-        listOperations.rightPush(KEY, employee);
+        setOperations.add(KEY, employee);
     }
-    public List<Employee> findAll(){
-        if (!redisTemplate.hasKey(KEY)) {
-            return null;
-        }
-        return listOperations.range(KEY, 0, listOperations.size(KEY));
+    public Set<Employee> findAll(){
+        return setOperations.members(KEY);
     }
     public Employee findById(Integer id){
-        List<Employee> employees = findAll();
-        for(Employee employee : employees){
+        Set<Employee> employees = findAll();
+        for (Employee employee : employees){
             if(employee.getId() == id){
                 return employee;
             }
@@ -45,6 +44,6 @@ public class EmployeeRepository {
         saveEmployee(employee);
     }
     public void delete(Integer id){
-        listOperations.remove(KEY, 1, findById(id));
+        setOperations.remove(KEY, findById(id));
     }
 }
