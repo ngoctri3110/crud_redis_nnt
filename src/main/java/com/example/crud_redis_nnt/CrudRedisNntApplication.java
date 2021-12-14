@@ -14,7 +14,6 @@ public class CrudRedisNntApplication {
     }
     @Bean
     LettuceConnectionFactory jedisConnectionFactory(){
-
         return new LettuceConnectionFactory();
     }
 
