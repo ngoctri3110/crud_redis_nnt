@@ -1,8 +1,6 @@
 package com.example.crud_redis_nnt.repository;
 
 import com.example.crud_redis_nnt.model.Employee;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Repository;
